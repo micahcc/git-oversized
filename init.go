@@ -8,7 +8,7 @@ import (
 	"path"
 
 	"github.com/aws/aws-sdk-go/aws/credentials"
-	"github.com/aws/aws-sdk-go/service/s3"
+	_ "github.com/aws/aws-sdk-go/service/s3"
 )
 
 type Config struct {
@@ -17,19 +17,41 @@ type Config struct {
 	AWSProfile string
 }
 
+func isInit() {
+
+}
+
 func Init(gitRoot string, bucket string, s3Prefix string, credentialProfile string) {
-	configFile := path.Join(gitRoot, "phat.json")
+    if
+
+	configFile := path.Join(gitRoot, ".git", "config")
+
+	var key string
 	var err error
 	var configData []byte
+
+	if bucket == "" {
+		fmt.Printf("Must provide a bucket to init\n")
+		os.Exit(-1)
+	}
 
 	// check that creds are readable
 	creds := credentials.NewSharedCredentials("", credentialProfile)
 	if _, err = creds.Get(); err != nil {
-		fmt.Println("While reading credentials, got: %v", err)
+		fmt.Printf("While reading credentials, got: %v\n", err)
 		os.Exit(-1)
 	}
 
-	// test that bucket is writeable
+	//	if s3Prefix == "" {
+	//		key = "test"
+	//	} else {
+	//		key = path.Join(s3Prefix, "test")
+	//	}
+	//	testData := []byte("nope")
+	//	if err = sendBytesToS3(credentialProfile, bucket, key, testData); err != nil {
+	//		fmt.Printf("Failed to send to bucket: 's3://%v/%v, error: %v\n", bucket, key, err)
+	//		os.Exit(-1)
+	//	}
 
 	// write out to config
 	config := new(Config)
